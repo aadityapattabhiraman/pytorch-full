@@ -25,3 +25,11 @@ zeros_tensor = torch.zeros(shape)
 print(f"Random Tensor:\n{rand_tensor}\n")
 print(f"Ones Tensor:\n{ones_tensor}\n")
 print(f"Zeros Tensor:\n{zeros_tensor}")
+
+tensor = torch.rand(3, 4)
+print(f"Shape of Tensor: {tensor.shape}")
+print(f"Datatype of Tensor: {torch.dtype}")
+print(f"Device Tensor is stored on: {torch.device}")
+
+if torch.cuda.is_available():
+    tensor = tensor.to("cuda")
