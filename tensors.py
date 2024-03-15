@@ -33,3 +33,13 @@ print(f"Device Tensor is stored on: {torch.device}")
 
 if torch.cuda.is_available():
     tensor = tensor.to("cuda")
+
+tensor = torch.ones(4, 4)
+print(f"First row: {tensor[0]}")
+print(f"First Column: {tensor[:, 0]}")
+print(f"Last Column: {tensor[..., -1]}")
+tensor[:, 1] = 0
+print(tensor)
+
+t1 = torch.cat([tensor, tensor, tensor], dim=1)
+print(t1)
