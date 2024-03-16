@@ -32,3 +32,9 @@ class NeuralNetwork(nn.Module):
 
 model = NeuralNetwork().to(device)
 print(model)
+
+x = torch.rand(1, 28, 28, device=device)
+logits = model(x)
+pred_prob = nn.Softmax(dim=1)(logits)
+y_pred = pred_prob.argmax(1)
+print(f"Predicted class: {y_pred}")
