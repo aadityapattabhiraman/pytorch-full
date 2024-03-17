@@ -31,3 +31,14 @@ class LeNet(nn.Module):
         for s in size:
             num_features *= s
         return num_features
+
+
+net = LeNet()
+print(net)
+
+input = torch.rand(1, 1, 32, 32)
+print(input.shape)
+
+output = net(input)
+print(output)
+print(output.shape)
