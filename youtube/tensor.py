@@ -47,3 +47,21 @@ print(ones_like_x)
 rand_like_x = torch.rand_like(x)
 print(rand_like_x.shape)
 print(rand_like_x)
+
+some_constants = torch.tensor([[3.1415926, 2.71828], [1.61803, 0.0072897]])
+print(some_constants)
+
+some_integers = torch.tensor((2, 3, 5, 7, 11, 13, 17, 19))
+print(some_integers)
+
+more_integers = torch.tensor(((2, 4, 6), [3, 6, 9]))
+print(more_integers)
+
+a = torch.ones((2, 3), dtype=torch.int16)
+print(a)
+
+b = torch.rand((2, 3), dtype=torch.float64) * 20.
+print(b)
+
+c = b.to(torch.int32)
+print(c)
