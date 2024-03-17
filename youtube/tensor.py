@@ -87,3 +87,32 @@ print(fives)
 
 dozens = threes * fours
 print(dozens)
+
+# Tensor Broadcasting
+rand = torch.rand(2, 4)
+doubled = rand * (torch.ones(1, 4) * 2)
+print(rand)
+print(doubled)
+
+a = torch.rand(3, 226, 226)
+b = a.unsqueeze(0)
+
+print(a.shape)
+print(b.shape)
+
+c = torch.rand(1, 1, 1, 1, 1)
+print(c)
+
+a = torch.rand(1, 20)
+print(a.shape)
+print(a)
+
+b = a.squeeze(0)
+print(b.shape)
+print(b)
+
+c = torch.rand(2, 2)
+print(c.shape)
+
+d = c.squeeze(0)
+print(d.shape)
