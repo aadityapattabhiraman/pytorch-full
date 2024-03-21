@@ -219,3 +219,91 @@ Keyword Arguments
         device (torch.device, optional) – the desired device of returned tensor. Default: if None, uses the current device for the default tensor type (see torch.set_default_device()). device will be the CPU for CPU tensor types and the current CUDA device for CUDA tensor types.
         requires_grad (bool, optional) – If autograd should record operations on the returned tensor. Default: False.
 
+#### squeeze
+torch.squeeze(input, dim=None) → Tensor
+
+Returns a tensor with all specified dimensions of input of size 1 removed.
+
+Parameters
+        input (Tensor) – the input tensor.
+        dim (int or tuple of ints, optional) –
+        if given, the input will be squeezed
+            only in the specified dimensions.
+
+#### unsqueeze
+torch.unsqueeze(input, dim) → Tensor
+
+Returns a new tensor with a dimension of size one inserted at the specified position.
+The returned tensor shares the same underlying data with this tensor.
+A dim value within the range [-input.dim() - 1, input.dim() + 1) can be used. Negative dim will correspond to unsqueeze() applied at dim = dim + input.dim() + 1.
+
+Parameters
+            input (Tensor) – the input tensor.
+            dim (int) – the index at which to insert the singleton dimension
+
+#### t
+torch.t(input) → Tensor
+
+Expects input to be <= 2-D tensor and transposes dimensions 0 and 1.
+0-D and 1-D tensors are returned as is. When input is a 2-D tensor this is equivalent to transpose(input, 0, 1).
+
+Parameters
+    input (Tensor) – the input tensor.
+
+#### transpose
+torch.transpose(input, dim0, dim1) → Tensor
+
+Returns a tensor that is a transposed version of input. The given dimensions dim0 and dim1 are swapped.
+If input is a strided tensor then the resulting out tensor shares its underlying storage with the input tensor, so changing the content of one would change the content of the other.
+If input is a sparse tensor then the resulting out tensor does not share the underlying storage with the input tensor.
+If input is a sparse tensor with compressed layout (SparseCSR, SparseBSR, SparseCSC or SparseBSC) the arguments dim0 and dim1 must be both batch dimensions, or must both be sparse dimensions. The batch dimensions of a sparse tensor are the dimensions preceding the sparse dimensions.
+
+Parameters
+        input (Tensor) – the input tensor.
+        dim0 (int) – the first dimension to be transposed
+        dim1 (int) – the second dimension to be transposed
+
+#### save
+torch.save(obj, f, pickle_module=pickle, pickle_protocol=DEFAULT_PROTOCOL, _use_new_zipfile_serialization=True)
+
+Saves an object to a disk file.
+
+
+Parameters
+        obj (object) – saved object
+        f (Union[str, PathLike, BinaryIO, IO[bytes]]) – a file-like object (has to implement write and flush) or a string or os.PathLike object containing a file name
+        pickle_module (Any) – module used for pickling metadata and objects
+        pickle_protocol (int) – can be specified to override the default protocol
+
+#### load
+torch.load(f, map_location=None, pickle_module=pickle, *, weights_only=False, mmap=None, **pickle_load_args)
+
+Loads an object saved with torch.save() from a file.
+
+torch.load() uses Python’s unpickling facilities but treats storages, which underlie tensors, specially. They are first deserialized on the CPU and are then moved to the device they were saved from. If this fails (e.g. because the run time system doesn’t have certain devices), an exception is raised. However, storages can be dynamically remapped to an alternative set of devices using the map_location argument.
+If map_location is a callable, it will be called once for each serialized storage with two arguments: storage and location. The storage argument will be the initial deserialization of the storage, residing on the CPU. Each serialized storage has a location tag associated with it which identifies the device it was saved from, and this tag is the second argument passed to map_location. The builtin location tags are 'cpu' for CPU tensors and 'cuda:device_id' (e.g. 'cuda:2') for CUDA tensors. map_location should return either None or a storage. If map_location returns a storage, it will be used as the final deserialized object, already moved to the right device. Otherwise, torch.load() will fall back to the default behavior, as if map_location wasn’t specified.
+If map_location is a torch.device object or a string containing a device tag, it indicates the location where all tensors should be loaded.
+Otherwise, if map_location is a dict, it will be used to remap location tags appearing in the file (keys), to ones that specify where to put the storages (values).
+User extensions can register their own location tags and tagging and deserialization methods using torch.serialization.register_package().
+
+Parameters
+        f (Union[str, PathLike, BinaryIO, IO[bytes]]) – a file-like object (has to implement read(), readline(), tell(), and seek()), or a string or os.PathLike object containing a file name
+        map_location (Optional[Union[Callable[[Tensor, str], Tensor], device, str, Dict[str, str]]]) – a function, torch.device, string or a dict specifying how to remap storage locations
+        pickle_module (Optional[Any]) – module used for unpickling metadata and objects (has to match the pickle_module used to serialize file)
+        weights_only (bool) – Indicates whether unpickler should be restricted to loading only tensors, primitive types and dictionaries
+        mmap (Optional[bool]) – Indicates whether the file should be mmaped rather than loading all the storages into memory. Typically, tensor storages in the file will first be moved from disk to CPU memory, after which they are moved to the location that they were tagged with when saving, or specified by map_location. This second step is a no-op if the final location is CPU. When the mmap flag is set, instead of copying the tensor storages from disk to CPU memory in the first step, f is mmaped.
+        pickle_load_args (Any) – (Python 3 only) optional keyword arguments passed over to pickle_module.load() and pickle_module.Unpickler(), e.g., errors=....
+
+Return type
+    Any
+
+#### flatten
+torch.flatten(input, start_dim=0, end_dim=-1) → Tensor
+
+Flattens input by reshaping it into a one-dimensional tensor. If start_dim or end_dim are passed, only dimensions starting with start_dim and ending with end_dim are flattened. The order of elements in input is unchanged.
+Unlike NumPy’s flatten, which always copies input’s data, this function may return the original object, a view, or copy. If no dimensions are flattened, then the original object input is returned. Otherwise, if input can be viewed as the flattened shape, then that view is returned. Finally, only if the input cannot be viewed as the flattened shape is input’s data copied. See torch.Tensor.view() for details on when a view will be returned.
+
+Parameters
+        input (Tensor) – the input tensor.
+        start_dim (int) – the first dim to flatten
+        end_dim (int) – the last dim to flatten

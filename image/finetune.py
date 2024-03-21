@@ -30,3 +30,27 @@ class dataset(torch.utils.data.Dataset):
 
         masks = (mask == obj_ids[:, None, None]).to(dtype=torch.uint8)
         boxes = masks_to_boxes(masks)
+
+        labels = torch.ones((num_objects,), dtype=torch.int64)
+
+        image_id = idx
+        area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
+        iscrowd = torch.zeros((num_objs,), dtype=torch.int64)
+
+        img = tv_tensors.Image(img)
+
+        target = {}
+        target["boxes"] = tv_tensors.BoundingBoxes(boxes, format="XYXY", canvas_size=F.get_size(img))
+        target["masks"] = tv_tensors.Mask(masks)
+        target["labels"] = labels
+        target["image_id"] = image_id
+        target["area"] = area
+        target["iscrowd"] = iscrowd
+
+        if self.transforms is not None:
+            img, target = self.transforms(img ,target)
+
+        return img, target
+
+    def __len__(self):
+        return len(self.imgs)
